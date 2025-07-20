@@ -1,0 +1,73 @@
+.hero-container {
+    max-width: 100%;
+    overflow-x: hidden;
+    z-index: 0;
+    width: 100vw;
+    height: 80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    object-fit: contain;
+    margin-top: -50px;
+}
+
+.parallax {
+    margin-top: 40px;
+    max-height: 100%;
+    overflow-y: hidden;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 100vw 1fr;
+    grid-template-rows: 80vw 1fr;
+    padding-top: 20px;
+    background-image: url('../../public/images/hero-section-background-2.jpg');
+    background-size: cover;
+    background-position: 50%;
+    z-index:-10;
+    box-shadow: inset 0 0 10px rgb(28, 10, 10);
+}
+
+.parallax > p{
+    grid-area: 1/1/2/2;
+    position: relative;
+    background-attachment: fixed;
+}
+
+.title {
+    position: absolute;
+    grid-area: 1 / 1 / 2 / 2;
+    z-index: 5;
+    margin-left: 46.5vw;
+    margin-top: 9.5vw;
+    font-family: DotGothic16;
+    font-size: 2.5vw;
+    font-weight: 600;
+    color: #e3dddd;
+}
+
+.animation {
+    perspective: 100px;
+    position: absolute;
+    grid-area: 1 / 1 / 2 / 2;
+    margin-left: 10vw;
+    margin-top: 7vw;
+    width: 68vw;
+    z-index: -1;
+}
+
+.frame {
+    position: absolute;
+    filter: saturate(4) hue-rotate(80deg) drop-shadow(3px 3px 10px #000000);
+    grid-area: 1 / 1 / 2 / 2;
+    width: 90vw;
+    margin-left: 5vw;
+    margin-top: 2vw;
+    z-index: 1;
+}
+
+@media screen and (max-width: 960px)
+{
+    .parallax {
+    margin-top: 5vw;
+    }
+}
