@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './about.css';
 import Stack from './CardStack.js';
 import {motion, transform, useScroll, useTransform} from 'framer-motion';
+import {Link} from 'react-router-dom';
 
 function About() {
 
@@ -94,8 +95,8 @@ function About() {
             <li> Developing and testing new recipes </li>
             <li> Drawing the assets you see on this site </li>
           </ul>
-          This portfolio showcases some of the <a className='emphasis'href="/projects">
-          projects I've worked on</a>, as well as <a className='emphasis'href="/personal">my hobbies</a>.
+          This portfolio showcases some of the <Link className='emphasis' to="/projects">
+          projects I've worked on</Link>, as well as <Link className='emphasis' to="/personal">my hobbies</Link>.
         </motion.p>
       </motion.div>
     </div>

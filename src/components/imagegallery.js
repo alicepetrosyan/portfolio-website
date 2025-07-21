@@ -12,9 +12,9 @@ function ImageGallery() {
         >
             <Masonry>
                 <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
-                <img src="images/cookie.png" style={{width: "100%", display: "block"}}/>
+                <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
                 {/* Children */}
-                <img src="images/camera-frame-2.png" style={{width: "100%", display: "block"}}/>
+                <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
                 <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
                 <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
                 <img src="images/icon-placeholder.jpg" style={{width: "100%", display: "block"}}/>
