@@ -15,7 +15,7 @@ function HeroSection() {
       <div className='parallax'>
         <motion.p className='title' style={{ y: frameY }}>ALICE PETROSYAN</motion.p>
         <motion.img className='frame' src='images/camera-frame-3.png' style={{ y: frameY }}/>
-        <motion.img className='animation' src='videos/placeholder-gif.gif' style={{ transform:videoTransform }}/>
+        <motion.video className='animation' src='videos/placeholder-video.mp4' style={{ transform:videoTransform }} loop='true' muted='true' autoPlay='true'/>
       </div>
     </div>
   );

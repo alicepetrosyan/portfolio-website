@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./SpotlightCard.css";
 
-const SpotlightCard = ({ children, projectName="", link="", desc="poop", img="images/icon-placeholder.jpg", className = "", spotlightColor = "#f0b0ca40" }) => {
+const SpotlightCard = ({ children, projectName="", link="", desc="poop", img="images/icon-placeholder.jpg", className = "", spotlightColor = "#f39abe53" }) => {
   const divRef = useRef(null);
 
   const handleMouseMove = (e) => {

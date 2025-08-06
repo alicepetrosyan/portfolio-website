@@ -34,10 +34,22 @@ ul {
   z-index: 900;
 }
 
+.border {
+  height: 50px;
+  z-index: 901;
+  position: fixed;
+  margin-top: -20px;
+  width: 100%;
+  background-image: url(../../public/images/navbar-border.gif);
+  background-size: 250px;
+  background-repeat: repeat-x;
+}
+
 .navbar-container {
   /* mask-position: 0px 80px;
   mask-size: cover; */
-  background-image: url(../../public/images/noise.png);
+  top: 0;
+  background-image: url('../../public/images/noise.png');
   background-blend-mode:screen;
   background-size: 100px;
   background-color: #e18fb4;
@@ -45,7 +57,7 @@ ul {
   justify-content: center;
   align-items: center;
   height: 90px;
-  width: 100vw;
+  width: 100%;
 }
 
 .nav-menu {

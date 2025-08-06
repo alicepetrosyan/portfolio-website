@@ -59,6 +59,8 @@
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: auto auto;
+    will-change: transform;
+    transition: all 0.1s ease-in-out;
 }
 
 .photo-collection {
@@ -79,6 +81,8 @@
     font-size: 1.25rem;
     text-align: left;
     line-height: 125%;
+    will-change: transform;
+    transition: all 0.1s ease-in-out;
 }
 
 .bullet-points {

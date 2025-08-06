@@ -50,6 +50,7 @@ function Navbar() {
         </ul>
       </div>
     </nav>
+    <div className='border'/>
     </>
   );
 }

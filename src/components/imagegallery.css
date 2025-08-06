@@ -4,9 +4,22 @@
     height: fit-content;
     background-image: url("../../public/images/personal-background.png");
     background-size: 100%;
+    filter: blur(0);
     background-repeat: repeat-y;
     justify-items: center;
 
+}
+
+.masonry-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: inherit;
+  filter: blur(1.5px);
+  z-index: -1; /* Place the blurred layer behind the children */
 }
 
 .masonry-container {
@@ -15,4 +28,32 @@
 
 .ResponsiveMasonry {
     height: 2000px;
+}
+
+.masonry-img {
+  border-radius: 1.5rem;
+  border: 1px solid #f8f5f5;
+  background-color: #f8f5f5;
+  padding: 1rem;
+}
+
+.masonry-img:hover {
+  transition: all 0.1s ease-out;
+  transform: scale(1.02);
+  filter: drop-shadow(2px 2px 5px);
+}
+
+.masonry-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+}
+
+.masonry-img::before {    
+    border-radius: 1.5rem;
+    border: 1px solid #f8f5f5;
+    background-color: #f8f5f5;
+    padding: 2rem;
+    filter: drop-shadow(5px 5px 5px);
 }

@@ -11,3 +11,13 @@
     align-content: center;
     justify-content: center;
 }
+
+.project-card {    
+    filter: drop-shadow(5px 5px 5px);
+}
+
+
+.project-card:hover {
+  transition: all 0.1s ease-out;
+  transform: scale(1.02);
+}

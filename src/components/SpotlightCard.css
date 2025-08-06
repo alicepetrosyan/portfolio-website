@@ -16,7 +16,7 @@ h {
   overflow: hidden;
   --mouse-x: 50%;
   --mouse-y: 50%;
-  --spotlight-color: rgba(172, 212, 240, 0.05);
+  --spotlight-color: rgba(141, 200, 243, 0.05);
 }
 
 .card-spotlight img {
