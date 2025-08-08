@@ -24,7 +24,6 @@ const SpotlightCard = ({ children, projectName="", link="", desc="poop", img="im
         <h>{projectName}</h>
         <br />
         <p>{desc}</p>
-        <a href={link}>learn more</a>
       {children}
     </div>
   );

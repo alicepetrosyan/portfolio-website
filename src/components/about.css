@@ -12,6 +12,14 @@
     flex-direction: column;
 }
 
+.emphasis {
+    color: #ef217a;
+}
+
+.emphasis:hover {
+    color: #f265a2;
+}
+
 .background {
     position: absolute;
     display: flex;
