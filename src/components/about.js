@@ -31,8 +31,8 @@ function About() {
           setStartingY(0);
           setStartingX(0);
 
-          setCardHeight("480px");
-          setCardWidth("400px");
+          setCardHeight("360px");
+          setCardWidth("300px");
         }
         else if (window.innerWidth <=1250) {
           setStartingOpacity(1);

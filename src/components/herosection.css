@@ -1,6 +1,6 @@
 .hero-container {
     max-width: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
     z-index: 0;
     width: 100vw;
     height: 80vw;

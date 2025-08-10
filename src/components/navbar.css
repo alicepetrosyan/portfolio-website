@@ -5,7 +5,7 @@
   100% { transform: rotate(0deg); }
 } */
 
-body {
+html,body {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -43,6 +43,7 @@ ul {
   background-image: url(../../public/images/navbar-border.gif);
   background-size: 250px;
   background-repeat: repeat-x;
+  width: 100vw;
 }
 
 .navbar-container {
@@ -114,6 +115,7 @@ ul {
 }
 
 @media screen and (max-width: 960px) {
+  
   .NavbarItems {
     position: relative;
   }
@@ -137,13 +139,13 @@ ul {
     justify-content: start;
     position: absolute;
     top: 130px;
-    left: 150%;
+    transform: translateX(150%);
     opacity: 1;
     transition: all 0.5s ease;
   }
 
   .nav-menu.active {
-    left: 0;
+    transform: translateX(0%);
     background-blend-mode: screen;
     background-color: #eab4cc;
     background-image: url(../../public/images/noise.png);
@@ -202,5 +204,9 @@ ul {
     background: #eab4cc;
     color: #d094af;
     transition: 250ms;
+  }
+
+  .border {
+    position: absolute;
   }
 }

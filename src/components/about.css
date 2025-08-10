@@ -38,6 +38,7 @@
 }
 
 .about-title {
+    color:#940e48;
     border-radius: 20px;
     padding: 20px;
     background-color: #F3F3F3;
@@ -157,10 +158,17 @@
 @media screen and (max-width: 960px) {
     .about-title {
         align-self: center;
+        font-size: 4vh;
+        padding: 1vh 1vh;
+    }
+
+    .photo-collection {
+        padding: 0;
     }
 
     .content > p {
-        padding: 200px 75px 200px 75px;
+        width: 110vw;
+        padding: 175px 75px 175px 75px;
     }
 
     .bullet-points {

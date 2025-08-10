@@ -73,3 +73,33 @@
   color: rgb(170, 20, 65);
   padding :0.5rem 2rem;
 }
+
+@media screen and (max-width: 960px) {
+.modal-background {
+    margin-top: -35vh;
+    width: 150vw;
+    height: 150vh;
+
+}
+
+.modal-container {
+    width: 80vw;
+    height: 80vh;
+}
+
+.modal-container > p {
+  font-size: 1rem;
+  padding: 0rem 1rem;
+}
+
+.modal-container > h {
+  font-size: 2rem;
+  color: #dc6394;
+}
+
+.modal-container > h1 {
+  font-size: 1rem;
+  color: rgb(170, 20, 65);
+  padding :0.5rem 0rem;
+}
+}
