@@ -1,0 +1,75 @@
+@keyframes wiggle {
+    0% { transform: translate(0,0); }
+   30% { transform: translate(0,-12px); }
+   70% { transform: translate(0,2px); }
+  100% { transform: translate(0,0); }
+}
+
+.modal-background {
+    justify-self: center;
+    position: fixed;
+    width: 110vw;
+    height: 110vh;
+    align-content: center;
+    justify-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    margin-top: -125px;
+}
+
+.modal-container {
+    margin-top: -10vh;
+    z-index: 1001;
+    width: 60vw;
+    height: 85vh;
+    background-color: #f8f5f5;
+    border-radius: 10px;
+    justify-items: left;
+    padding: 5vh 5vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-title {
+    position: inherit;
+    text-align: center;
+    justify-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.button-container {
+    width: 100%;
+    justify-items: right;
+    background-color: #6e0a0a;
+}
+
+.button {
+    float: right;
+    background-color: #ffffff00;
+    color:rgb(205, 35, 46);
+    border-style: none;
+    font: 1.5rem Sour Gummy;
+    margin: -5vh;
+    padding: 1rem;
+}
+
+.button:hover {
+    color:rgb(239, 88, 98);
+}
+
+.modal-container > p {
+  font-size: 1rem;
+  padding: 0rem 3rem;
+}
+
+.modal-container > h {
+  font-size: 3rem;
+  color: #dc6394;
+}
+
+.modal-container > h1 {
+  font-size: 1.5rem;
+  color: rgb(170, 20, 65);
+  padding :0.5rem 2rem;
+}

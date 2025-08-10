@@ -3,7 +3,7 @@
     display: flex;
     width: 100%;
     background-blend-mode: screen;
-    background-color: #e18fb4;
+    background-color: #eab4cc;
     background-image: url(../../public/images/noise.png);
     background-size: 100px;
     min-height: 30vh;
@@ -26,7 +26,7 @@
     width: 100%;
     background-blend-mode: screen;
     background-size: 100px;
-    background-color: #e18fb4;
+    background-color: #eab4cc;
     background-image: url(../../public/images/noise.png);
     min-height: 30vh;
     mask-image: url('../../public/images/about-me-container-2.png');

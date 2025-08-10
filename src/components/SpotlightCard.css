@@ -1,10 +1,18 @@
-p {
+.card-text > p {
   font-size: 1rem;
 }
 
-h {
+.card-text > h {
   font-size: 1.5rem;
   color: #dc6394;
+}
+
+.card-text > h4 {
+  color: rgb(170, 20, 65);
+}
+
+.card-text {
+  padding-top: 1rem;
 }
 
 .card-spotlight {

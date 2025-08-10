@@ -52,7 +52,7 @@ ul {
   background-image: url('../../public/images/noise.png');
   background-blend-mode:screen;
   background-size: 100px;
-  background-color: #e18fb4;
+  background-color: #eab4cc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -145,7 +145,7 @@ ul {
   .nav-menu.active {
     left: 0;
     background-blend-mode: screen;
-    background-color: #e18fb4;
+    background-color: #eab4cc;
     background-image: url(../../public/images/noise.png);
     background-size: 100px;
     opacity: 1;
@@ -199,7 +199,7 @@ ul {
   }
 
   .nav-links-mobile:hover {
-    background: #e18fb4;
+    background: #eab4cc;
     color: #d094af;
     transition: 250ms;
   }

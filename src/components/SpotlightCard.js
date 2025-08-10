@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./SpotlightCard.css";
 
-const SpotlightCard = ({ children, projectName="", link="", desc="poop", img="images/icon-placeholder.jpg", className = "", spotlightColor = "#f39abe53" }) => {
+const SpotlightCard = ({ onClick, children, projectName="", tools="tools", desc="poop", img="images/icon-placeholder.jpg", className = "", spotlightColor = "#f39abe53" }) => {
   const divRef = useRef(null);
 
   const handleMouseMove = (e) => {
@@ -16,14 +16,19 @@ const SpotlightCard = ({ children, projectName="", link="", desc="poop", img="im
 
   return (
     <div
+      onClick={onClick}
       ref={divRef}
       onMouseMove={handleMouseMove}
       className={`card-spotlight ${className}`}
     >
         <img src={img} />
-        <h>{projectName}</h>
-        <br />
-        <p>{desc}</p>
+        <div className='card-text'>
+          <h>{projectName}</h>
+          <br />
+          <h4>{tools}</h4>
+          <br />
+          <p>{desc}</p>
+        </div>
       {children}
     </div>
   );
