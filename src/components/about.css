@@ -29,14 +29,14 @@
 }
 
 .about-lead {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   line-height: 1.55;
   margin-bottom: 1rem;
   max-width: 38rem;
 }
 
 .bullet-points {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   list-style: none;
   padding-left: 0;
   display: flex;
