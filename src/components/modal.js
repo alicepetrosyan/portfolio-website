@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import TypingTitle from './TypingTitle';
 import PictureImage from './common/PictureImage';
@@ -124,7 +125,13 @@ function Modal({ project, closeModal }) {
 
   if (!project) return null;
 
-  return (
+  // Render through a portal to <body>. The modal is mounted inside the projects
+  // section, which sets `isolation: isolate` + z-index and so forms its own
+  // stacking context — that caps the modal's z-index to the projects section's
+  // level, trapping it beneath the personal section (z-index 4) no matter how
+  // high the modal's own z-index goes. Portaling to <body> lifts the modal out
+  // of that stacking context so its z-index competes at the top level and wins.
+  return createPortal(
     <AnimatePresence>
       <div className="modal-background" onClick={closeModal}>
         <motion.div
@@ -186,7 +193,8 @@ function Modal({ project, closeModal }) {
           )}
         </motion.div>
       </div>
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

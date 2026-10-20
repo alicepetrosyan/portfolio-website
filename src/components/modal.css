@@ -16,6 +16,7 @@
   border-radius: 12px;
   padding: 1.6rem 1.8rem 2rem;
   color: var(--ink);
+  z-index: 1200;
 }
 
 .modal-title {
