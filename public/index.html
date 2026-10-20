@@ -10,11 +10,32 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+
+    <!-- Hero backdrop + reflection map is needed immediately (above the fold). -->
+    <link rel="preload" as="image" href="%PUBLIC_URL%/assets/backgrounds/hero-image.webp" />
+    <!-- Projects parallax backdrop is below the fold: prefetch at low priority so
+         it is cached and paints on time when the visitor scrolls to Projects. -->
+    <link rel="prefetch" as="image" href="%PUBLIC_URL%/assets/backgrounds/projects-background.jpg" />
+
     <script src="https://kit.fontawesome.com/2d9e394acf.js" crossorigin="anonymous"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Pangolin&family=Imperial+Script&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&family=Yeseva+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=DotGothic16&family=Orbitron:wght@500..900&display=swap" rel="stylesheet">
+
+    <!-- Self-hosted futuristic display face (plain-background section titles).
+         Declared here so the browser resolves the public/ path at runtime and
+         the build step never tries to bundle the file.
+         NOTE: "Kabisat Demo" is PERSONAL USE ONLY — license before commercial use. -->
+    <style>
+      @font-face {
+        font-family: 'Kabisat';
+        src: url('%PUBLIC_URL%/assets/fonts/Kabisat Demo-ItalicTall.ttf') format('truetype');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
 
     <!--
       manifest.json provides metadata used when your web app is installed on a

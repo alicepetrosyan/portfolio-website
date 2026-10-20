@@ -1,0 +1,82 @@
+.contact-section {
+  background: var(--page-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5.5rem 4vw 7rem;
+  /* Top of the scroll-over stack. */
+  position: relative;
+  z-index: 5;
+}
+
+.contact-title {
+  width: min(1400px, 100%);
+  margin-bottom: 1.8rem;
+  text-align: left;
+}
+
+.pdf-row {
+  width: min(1400px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.pdf-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pdf-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.pdf-heading h3 {
+  font-size: 1.05rem;
+}
+
+.pdf-download {
+  color: var(--brand);
+  font-family: DotGothic16, monospace;
+  font-size: 0.85rem;
+}
+
+.pdf-frame {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 1px solid var(--border-muted);
+  background: var(--surface);
+}
+
+.social-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.social-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--text-on-dark);
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  font-size: 1.1rem;
+}
+
+.social-icon:hover {
+  background: var(--brand-mid);
+}
+
+@media screen and (max-width: 800px) {
+  .pdf-row {
+    grid-template-columns: 1fr;
+  }
+}

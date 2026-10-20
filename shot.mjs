@@ -1,0 +1,16 @@
+import { chromium } from 'playwright-core';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 820 } });
+const errors = [];
+page.on('pageerror', (e) => errors.push('PAGEERROR: ' + e.message));
+await page.goto('http://localhost:3000', { waitUntil: 'networkidle', timeout: 60000 });
+await page.waitForTimeout(1200);
+await page.evaluate(() => document.getElementById('projects')?.scrollIntoView({ block: 'start' }));
+await page.waitForTimeout(2500);
+await page.screenshot({ path: 'c-rest.png' });
+const nextBtn = await page.$('.carousel-btn-next');
+await nextBtn.click(); await page.waitForTimeout(1100);
+await nextBtn.click(); await page.waitForTimeout(1100);
+await page.screenshot({ path: 'c-long.png' });
+console.log('errors:', errors.length ? errors.join('\n') : '(none)');
+await browser.close();

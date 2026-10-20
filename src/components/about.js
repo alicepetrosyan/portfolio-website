@@ -1,106 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import './about.css';
-import Stack from './CardStack.js';
-import {motion, transform, useScroll, useTransform} from 'framer-motion';
-import {Link} from 'react-router-dom';
+import AboutModel from './AboutModel';
+import TypingTitle from './TypingTitle';
+import { scrollToSection } from '../utils/scroll';
+import aboutContent from '../data/about.json';
+
+const { lead, bullets: BULLETS, closing } = aboutContent;
 
 function About() {
+  const sectionRef = useRef(null);
+  const [showCopy, setShowCopy] = useState(false);
+  const started = useRef(false);
 
-  const { scrollYProgress } = useScroll({
-    offset: ["start start", "end start"],
-  });
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return undefined;
 
-  const [startingOpacity, setStartingOpacity] = useState(0);
-  const [startingAngle, setStartingAngle] = useState(0);
-  const [startingSize, setStartingSize] = useState(0);
-  const [cardWidth, setCardWidth] = useState(0);
-  const [cardHeight, setCardHeight] = useState(0);
-  const [startingHeadingRotation, setStartingHeadingRotation] = useState(0);
-  const [startingHeadingSize, setStartingHeadingSize] = useState(0);
-  const [startingY, setStartingY] = useState(0);
-  const [startingX, setStartingX] = useState(0);
-
-    useEffect(() => {
-      const handleResize = () => {
-        if (window.innerWidth <=1100) {
-          setStartingOpacity(1);
-          setStartingAngle("0deg");
-          setStartingSize(1);
-          setStartingHeadingRotation("0deg");
-          setStartingHeadingSize(1);
-          setStartingY(0);
-          setStartingX(0);
-
-          setCardHeight("360px");
-          setCardWidth("300px");
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          setShowCopy(true);
+            observer.disconnect();
         }
-        else if (window.innerWidth <=1250) {
-          setStartingOpacity(1);
-          setStartingAngle("0deg");
-          setStartingSize(1);
-          setStartingHeadingRotation("0deg");
-          setStartingHeadingSize(1);
-          setStartingY(0);
-          setStartingX(0);
-          
-          setCardHeight("480px");
-          setCardWidth("400px");
-        }
-        else {
-          setStartingOpacity(0);
-          setStartingAngle("15deg");
-          setStartingSize(1.3);
-          setStartingHeadingRotation("-10deg");
-          setStartingHeadingSize(1.5);
-          setStartingY(200);
-          setStartingX(-100);
+      },
+      { threshold: 0.35 }
+    );
 
-          setCardHeight("480px");
-          setCardWidth("400px");
-        }
-      };
-
-      handleResize();
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
-    
-  const contentOpacity = useTransform(scrollYProgress, [0.22, 0.33], [startingOpacity, 1]);
-  const contentSize = useTransform(scrollYProgress, [0.22, 0.33], [startingSize, 1]);
-  const contentY = useTransform(scrollYProgress, [0.22, 0.33], [startingY,0]);
-  const contentX = useTransform(scrollYProgress, [0.22, 0.33], [startingX,0]);
-  const textRotation = useTransform(scrollYProgress, [0.22, 0.33], [startingAngle, "0deg"]);
-  const headingRotation = useTransform(scrollYProgress, [0.15, 0.3], [startingHeadingRotation, "0deg"]);
-  const headingSize = useTransform(scrollYProgress, [0.15, 0.3], [startingHeadingSize, 1]);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className = 'about-container'>
-      <div className='background' />
-      <motion.div className='content'>
-        <div className='title-and-stack'>
-          <motion.h className = "about-title" style={{scale: headingSize, rotate: headingRotation}}>about me</motion.h>
-          <motion.div className='photocollection-wrapper' style={{opacity: contentOpacity, scale: contentSize, y: contentY, x: contentX}}>
-            <Stack cardDimensions={{width: cardWidth, height: cardHeight}} className='photo-collection'/>
-          </motion.div>
-        </div>
-        <motion.p style={{rotateZ: textRotation , scale: contentSize, y: contentY, x: contentY, opacity: contentOpacity}}>
-          Hi, I'm Alice! I'm a Mechatronics Engineering student at the University of Waterloo with a passion for robotics
-          and baking. My interests lie within mechanical design and control systems. Outside of my academics you'll find me: 
-          <ul className='bullet-points'>
-            <li> Designing and manufacturing the aero package of an electric racecar as part of UWFE's aerodynamics subteam </li>
-            <li> Tinkering away on personal projects </li>
-            <li> Developing and testing new recipes </li>
-            <li> Drawing the assets you see on this site </li>
+    <section id="about" className="section about-container" ref={sectionRef}>
+      <div className="about-layout">
+        <div className="about-copy">
+          <TypingTitle className="pixel-title pixel-title--display about-title" text="about me" />
+          <motion.p
+            className="about-lead"
+            initial={{ opacity: 0, y: 28 }}
+            animate={showCopy ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5 }}
+          >
+            {lead}
+          </motion.p>
+          <ul className="bullet-points">
+            {BULLETS.map((item, index) => (
+              <motion.li
+                key={item}
+                initial={{ opacity: 0, y: 36 }}
+                animate={showCopy ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.45, delay: 0.25 + index * 0.12 }}
+              >
+                {item}
+              </motion.li>
+            ))}
           </ul>
-          This portfolio showcases some of the <Link className='emphasis' to="/projects">
-          projects I've worked on</Link>, as well as <Link className='emphasis' to="/personal">my hobbies</Link>.
-        </motion.p>
-      </motion.div>
-    </div>
-  )
+          <motion.p
+            className="about-lead"
+            initial={{ opacity: 0, y: 20 }}
+            animate={showCopy ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.45, delay: 0.85 }}
+          >
+            {closing.before}
+            <button type="button" className="emphasis" onClick={() => scrollToSection('projects')}>
+              {closing.projectsLink}
+            </button>
+            {closing.between}
+            <button type="button" className="emphasis" onClick={() => scrollToSection('personal')}>
+              {closing.hobbiesLink}
+            </button>
+            {closing.after}
+          </motion.p>
+        </div>
+        <AboutModel />
+      </div>
+    </section>
+  );
 }
 
-export default About
+export default About;

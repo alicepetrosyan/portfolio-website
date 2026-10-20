@@ -1,0 +1,121 @@
+.folder-card {
+  width: min(520px, 72vw, calc(100% - 32px));
+  /* Height is driven by the tab + a SQUARE body (see .folder-body), rather than
+     forcing the whole card square — otherwise the body ends up shorter than it
+     is wide and the cover photo gets cropped to a non-square area. */
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.55rem;
+  color: inherit;
+  pointer-events: auto;
+  overflow: visible;
+  filter: drop-shadow(0 14px 20px var(--folder-focus-shadow))
+    drop-shadow(0 0 9px var(--folder-focus-glow));
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.folder-card.is-active {
+  cursor: pointer;
+}
+
+.carousel-slide:not(.is-active) .folder-card {
+  filter: drop-shadow(0 18px 25px var(--folder-stack-shadow));
+}
+
+.folder-tab {
+  position: relative;
+  z-index: 2;
+  margin-bottom: -1px;
+  display: flex;
+  flex: 0 0 auto;
+  width: 56%;
+  min-height: 3.4rem;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.55rem 0.75rem;
+  background: var(--blue-panel);
+  color: var(--ink-strong);
+  font-family: DotGothic16, monospace;
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.15;
+  text-align: left;
+  overflow-wrap: break-word;
+  overflow: visible;
+  border-radius: 12px 12px 0 0;
+}
+
+.folder-tab::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  right: -12px;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  -webkit-mask-image: radial-gradient(circle 12px at 100% 0%, transparent 11.5px, #000 12.5px);
+  mask-image: radial-gradient(circle 12px at 100% 0%, transparent 11.5px, #000 12.5px);
+  pointer-events: none;
+}
+
+.folder-body {
+  width: 100%;
+  /* Square body so the cover photo is always framed in a square (matches the
+     3D folders). The card height grows to fit tab + this square. */
+  aspect-ratio: 1;
+  min-height: 0;
+  padding: 1.8rem;
+  background: var(--blue-panel);
+  overflow: hidden;
+  border-radius: 0 12px 12px 12px;
+}
+
+.folder-body img,
+.folder-body picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--blue-highlight);
+  border-radius: 8px;
+}
+
+.folder-placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: var(--text-on-dark);
+  font-family: DotGothic16, monospace;
+}
+
+.folder-card.is-active:hover,
+.folder-card.is-active:focus-visible {
+  transform: translateY(-4px);
+  filter: drop-shadow(0 18px 24px var(--folder-focus-shadow))
+    drop-shadow(0 0 11px var(--folder-focus-glow));
+}
+
+.folder-card:focus-visible {
+  outline: 3px solid var(--accent-pink);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .folder-card {
+    transition: none;
+  }
+}
+
+/* Flat fallback (mobile / reduced-motion / no WebGL): recolor the folder tab
+   and body to the single site background color (chrome-3d-folders Req 1.5). */
+.is-flat-fallback .folder-tab,
+.is-flat-fallback .folder-body {
+  background: var(--page-bg);
+}

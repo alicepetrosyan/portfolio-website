@@ -1,113 +1,67 @@
-/* @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-   30% { transform: rotate(3deg); }
-   70% { transform: rotate(-3deg); }
-  100% { transform: rotate(0deg); }
-} */
-
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-}
-
-@keyframes wiggle {
-    0% { transform: translate(0,0); }
-   30% { transform: translate(0,-12px); }
-   70% { transform: translate(0,2px); }
-  100% { transform: translate(0,0); }
-}
-
-ul {
-    list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .navbar {
-  height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 900;
+  pointer-events: none;
+  background-color: transparent;
 }
 
-.border {
-  height: 50px;
-  z-index: 901;
-  position: fixed;
-  margin-top: -20px;
-  width: 100%;
-  background-image: url(../../public/images/navbar-border.gif);
-  background-size: 250px;
-  background-repeat: repeat-x;
-  width: 100vw;
+/* Over the dark hero and projects backdrops, use pale nav text/icon for
+   contrast. The navbar stays transparent in both (no solid background).
+   !important so this state override reliably beats the base .nav-links color
+   regardless of cascade/source order quirks. */
+.navbar.is-hero-active .nav-links,
+.navbar.is-hero-active .menu-icon,
+.navbar.is-projects-active .nav-links,
+.navbar.is-projects-active .menu-icon {
+  color: var(--text-on-dark) !important;
 }
 
 .navbar-container {
-  /* mask-position: 0px 80px;
-  mask-size: cover; */
-  top: 0;
-  background-image: url('../../public/images/noise.png');
-  background-blend-mode:screen;
-  background-size: 100px;
-  background-color: #eab4cc;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90px;
+  height: 72px;
   width: 100%;
+  pointer-events: none;
 }
 
 .nav-menu {
-  margin-top: -50px;
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  grid-gap: 0;
+  display: flex;
+  gap: 1.6rem;
   list-style: none;
-  width: 80vw;
-  justify-content: center;
+  pointer-events: auto;
+  padding: 0.4rem 1.2rem;
 }
 
 .nav-item {
-  height: 60px;
+  height: auto;
 }
 
 .nav-links {
-  z-index:999;
-  background-image:url('../../public/images/navbutton_noring.png');
-  filter: drop-shadow(3px 3px 4px #421327);
-  background-repeat: no-repeat;
-  background-position: center;
-  object-fit: fill;
-  background-size: 10.5rem;
-  color: #584244;
-  font-family: DotGothic16;
-  font-weight: 600;
-  letter-spacing: 3.5px;
-  display: flex;
-  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--ink-nav);
+  font-family: DotGothic16, monospace;
+  font-size: 1.35rem;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.15rem;
   text-decoration: none;
-  padding: 3rem 4rem;
+  text-underline-offset: 0.28em;
 }
 
-  .nav-links:hover {
-    background-image:url('../../public/images/navbutton.png');
-    /* background-size: 11rem; */
-    color: #e18fb4;
-    transition: all 0.2s ease;
-    border-radius: 0;
-    animation: wiggle 1s;
-  }
-
-.fa-bars {
-  color: #e3dddd;
-}
-
-.nav-links-mobile {
-  display: none;
+.nav-links:hover {
+  text-decoration: underline;
 }
 
 .menu-icon {
@@ -115,104 +69,41 @@ ul {
 }
 
 @media screen and (max-width: 960px) {
-  html,body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
-  .NavbarItems {
-    position: relative;
-  }
-
-  .nav-item {
-    height: 14vh;
-  }
-
   .navbar-container {
-    mask-image: none;
-    height: 90px;
-  }
-
-  .nav-menu {
-    grid-gap: 2vh;
-    padding-top: 1vh;
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    justify-content: start;
-    position: absolute;
-    top: 130px;
-    transform: translateX(150%);
-    opacity: 1;
-    transition: all 0.5s ease;
-  }
-
-  .nav-menu.active {
-    transform: translateX(0%);
-    background-blend-mode: screen;
-    background-color: #eab4cc;
-    background-image: url(../../public/images/noise.png);
-    background-size: 100px;
-    opacity: 1;
-    transition: all 0.5s ease;
-    z-index: 1;
-  }
-
-  .nav-links {
-    width: 100vw;
-    padding: 7vh;
-    background-size: 45vh;
-    font-size: larger;
-    text-align: center;
-    display: table;
-  }
-
-  .nav-links:hover {
-    background-size: 47vh;
-    color: #e18fb4;
-    border-radius: 0;
+    justify-content: flex-end;
+    padding: 0 1.2rem;
   }
 
   .menu-icon {
     display: block;
-    position: absolute;
-    top: 5%;
-    right: 0;
-    transform: translate(-100%, 60%);
-    font-size: 1.8rem;
+    pointer-events: auto;
     cursor: pointer;
+    font-size: 1.6rem;
+    color: var(--ink-nav);
+    z-index: 910;
   }
 
-  .fa-times {
-    color: #e3dddd;
-    font-size: 2rem;
-  }
-
-  .nav-links-mobile {
-    display: block;
-    text-align: center;
-    margin: 2rem auto;
-    width: 100%;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 1.5rem;
-    background-color: transparent;
-    color: #e3dddd;
-    padding: 14px 20px;
-    border: 1px solid #e3dddd;
-    transition: all 0.3s ease-out;
-  }
-
-  .nav-links-mobile:hover {
-    background: #eab4cc;
-    color: #d094af;
-    transition: 250ms;
-  }
-
-  .border {
+  .nav-menu {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.4rem;
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding-top: 18vh;
+    background: var(--nav-overlay);
+    transform: translateX(110%);
+    transition: transform 0.4s ease;
+  }
+
+  .nav-menu.active {
+    transform: translateX(0);
+  }
+
+  .nav-links {
+    font-size: 1.7rem;
   }
 }

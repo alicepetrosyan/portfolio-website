@@ -2,5 +2,117 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Yeseva One;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+}
+
+html {
+  /* Catch on each section as you scroll. `proximity` snaps when you're near a
+     section boundary but still lets you scroll freely through long sections,
+     so it settles on each one without trapping the scroll. We deliberately do
+     NOT set scroll-behavior: smooth here — the nav/arrow use GSAP ScrollTo to
+     animate scrolling, and browser smooth-scroll would fight those writes. */
+  scroll-snap-type: y proximity;
+}
+
+/* The Kabisat @font-face lives in public/index.html (as a <style> block) so
+   the browser resolves the public/ font path at runtime and webpack doesn't
+   try to bundle it. See --font-display below for the fallback chain.
+   NOTE: "Kabisat Demo" is licensed for PERSONAL USE ONLY. Swap to a licensed
+   file before any commercial use. */
+:root {
+  /* Futuristic accent header. Kabisat loads if present; Orbitron is the
+     live preview fallback until the file is added. */
+  --font-display: 'Kabisat', 'Orbitron', sans-serif;
+}
+
+body {
+  font-family: Comfortaa, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 500;
+  background: var(--page-bg);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}
+
+.app-shell {
+  min-height: 100%;
+}
+
+.section {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  scroll-margin-top: 0;
+  /* Each section is a snap point at its top edge. */
+  scroll-snap-align: start;
+  /* Don't force a snap on sections taller than the viewport (e.g. with the
+     carousel/content) — let the user rest mid-section if they scroll there. */
+  scroll-snap-stop: normal;
+}
+
+/* Placeholder shown while a lazily-loaded section chunk is still downloading.
+   Opaque + full height + above the pinned hero so the hero never shows through
+   the gap before the real section mounts. */
+.section-fallback {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--page-bg);
+}
+
+.pixel-title {
+  font-family: DotGothic16, monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  font-size: 3.75rem;
+  /* DotGothic16 only has a single thin weight; a hairline text-shadow
+     thickens the pixel glyphs so the title reads bold and doesn't get lost. */
+  text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor;
+}
+
+/* Futuristic variant for the plain-background sections (about / personal) so
+   their titles carry more visual weight and echo the hero logo, while the rest
+   of the site keeps the pixel (DotGothic16) identity. */
+.pixel-title--display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  font-size: 2.4rem;
+}
+
+.type-caret {
+  color: var(--brand-mid);
+  animation: caret-blink 1s steps(2, start) infinite;
+}
+
+@keyframes caret-blink {
+  to { visibility: hidden; }
+}
+
+@media screen and (max-width: 700px) {
+  .pixel-title {
+    font-size: 2.7rem;
+  }
+
+  .pixel-title--display {
+    font-size: 1.9rem;
+  }
+}
+
+button,
+a {
+  font-family: inherit;
 }

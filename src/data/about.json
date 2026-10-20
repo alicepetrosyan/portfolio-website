@@ -1,0 +1,16 @@
+{
+  "lead": "Hi, I'm Alice! I'm a Mechatronics Engineering student at the University of Waterloo with a passion for hardware and controls. I love creating physical systems that solve real-world problems. I pride myself in my broad skillset, having worked in a variety of roles. I've previously worked at:",
+  "bullets": [
+    "Tesla -- manufacturing testing for Cybertruck, Cybercab, and Model Y",
+    "University of Waterloo's Active & Interactive Robotics Lab -- bridging the gap between robots & humans",
+    "Apex Motion Control -- making cake decorating robots",
+    "S&C Electric -- manufacturing high-voltage switches to keep the grid on"
+  ],
+  "closing": {
+    "before": "This portfolio aims to showcase my technical skills and the ",
+    "projectsLink": "projects I've worked on",
+    "between": ", as well as provide a glimpse into ",
+    "hobbiesLink": "my passions, hobbies, and personal interests",
+    "after": ". I'm a very passionate baker, and as such, you'll find quite a bit of food on here (even in the projects section!)"
+  }
+}

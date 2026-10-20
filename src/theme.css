@@ -1,0 +1,61 @@
+:root {
+  /* ----------------------------------------------------------------------
+   * Backgrounds & surfaces
+   * -------------------------------------------------------------------- */
+  --page-bg: #d7dbed;          /* site background (about/personal/contact) */
+  --project-background: #0a3f74; /* projects section (deep blue) */
+  --surface: #f4f7fb;          /* light panels: modal, pdf frame */
+  --surface-muted: #c9d2e8;    /* muted panel: gallery thumb */
+  --border-muted: #b9c4dd;     /* hairline borders */
+  --nav-overlay: rgba(213, 218, 232, 0.96); /* mobile nav drawer */
+
+  /* ----------------------------------------------------------------------
+   * Ink / text
+   * -------------------------------------------------------------------- */
+  --ink: #0b2b50;              /* body text */
+  --ink-soft: var(--brand);    /* titles / headings share the one accent blue */
+  --ink-strong: #1d2d58;       /* strong text (folder tab, caption) */
+  --ink-nav: #1a4a86;          /* nav + scroll arrow (hue 210, darker brand) */
+  --project-header-color: #d8dff0; /* light heading over dark projects bg */
+  --text-on-dark: #eaf3ff;     /* near-white text on dark/blue surfaces
+                                  (nav-active, buttons, social icons) */
+
+  /* ----------------------------------------------------------------------
+   * Blue family — a single hue (210°) spans headings, links, folders,
+   * image backgrounds, the 3D-model panels and the hero sky. Everything
+   * below is one ramp from dark to light so nothing clashes.
+   * -------------------------------------------------------------------- */
+  --brand: #5989b3;            /* headings, icons, emphasis (bright cyan) */
+  --brand-mid: #5b97c9;        /* hovers, caret */
+  --brand-light: #a1caeb;      /* lighter hover */
+  /* Inline body links use a deeper shade of the same cyan so small text stays
+     readable on the light lavender background (bright accent alone is too low
+     contrast at body size). Underlines carry the rest of the affordance. */
+  --link: #2b80a1;
+  --link-hover: #3597bd;
+
+  /* Folder tab/body + 3D-model panel background. */
+  --blue-panel: #74b4f2;
+  /* Image backgrounds, borders, hero accent + gradient top. */
+  --blue-highlight: #9ccdff;
+  /* Hero sky gradient stops (same hue, light -> dark). */
+  --blue-sky-soft: #cfe4ff;
+  --blue-sky-mid: #5fa6ea;
+  --blue-sky-base: var(--brand);
+  --blue-sky-deep: #1a4a86;
+
+  /* ----------------------------------------------------------------------
+   * Pink / red accents
+   * -------------------------------------------------------------------- */
+  --accent-pink: #dc6394;      /* focus outlines */
+  --accent-red: #c43b46;       /* modal close button */
+  --accent-red-hover: #ef5862;
+
+  /* ----------------------------------------------------------------------
+   * Shadows & overlays
+   * -------------------------------------------------------------------- */
+  --overlay: rgba(24, 32, 56, 0.35);          /* modal backdrop */
+  --folder-stack-shadow: rgba(0, 2, 18, 0.82); /* deep drop shadows / text shadow */
+  --folder-focus-shadow: rgba(5, 12, 42, 0.48); /* folder drop shadow */
+  --folder-focus-glow: rgba(194, 216, 255, 0.38); /* folder glow */
+}

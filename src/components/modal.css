@@ -1,107 +1,139 @@
-@keyframes wiggle {
-    0% { transform: translate(0,0); }
-   30% { transform: translate(0,-12px); }
-   70% { transform: translate(0,2px); }
-  100% { transform: translate(0,0); }
-}
-
 .modal-background {
-    justify-self: center;
-    position: fixed;
-    width: 110vw;
-    height: 110vh;
-    align-content: center;
-    justify-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-    margin-top: -125px;
-    display: grid;
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(6px);
+  background: var(--overlay);
 }
 
 .modal-container {
-    align-self: center;
-    justify-self: center;
-    margin-top: -10vh;
-    z-index: 1001;
-    width: 60vw;
-    height: 85vh;
-    background-color: #f8f5f5;
-    border-radius: 10px;
-    padding: 5vh 5vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+  width: min(780px, 92vw);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 1.6rem 1.8rem 2rem;
+  color: var(--ink);
 }
 
 .modal-title {
-    position: inherit;
-    text-align: center;
-    justify-items: center;
-    padding: 0;
-    margin: 0;
+  font-size: 2rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+
+.modal-tools {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  margin-bottom: 0.8rem;
+}
+
+.modal-container p {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0 0 0.9rem;
+}
+
+.modal-container h3 {
+  font-family: DotGothic16, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand);
+  padding: 0.2rem 0 0.4rem;
+  /* DotGothic16 ships a single thin weight, so font-weight alone barely
+     registers. A tight text-shadow fattens the glyph edges so the pixel
+     headers read as bold and stop getting lost against the body copy. */
+  text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor;
+}
+
+.modal-list {
+  margin: 0;
+  padding: 0 0 0.9rem 1.3rem;
+  list-style: disc;
+}
+
+.modal-list li {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0 0 0.3rem;
+}
+
+.modal-list li::marker {
+  color: var(--brand);
 }
 
 .button-container {
-    width: 100%;
-    justify-items: right;
-    background-color: #6e0a0a;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .button {
-    float: right;
-    background-color: #ffffff00;
-    color:rgb(205, 35, 46);
-    border-style: none;
-    font: 1.5rem Sour Gummy;
-    margin: -5vh;
-    padding: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--accent-red);
+  font: 1.4rem Sour Gummy, sans-serif;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
 }
 
 .button:hover {
-    color:rgb(239, 88, 98);
+  color: var(--accent-red-hover);
 }
 
-.modal-container > p {
-  font-size: 1rem;
-  padding: 0rem 3rem;
+.modal-gallery {
+  margin-top: 0.6rem;
+  display: grid;
+  gap: 0.8rem;
 }
 
-.modal-container > h {
-  font-size: 3rem;
-  color: #dc6394;
+.gallery-feature {
+  background: var(--page-bg);
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
 }
 
-.modal-container > h1 {
-  font-size: 1.5rem;
-  color: rgb(170, 20, 65);
-  padding :0.5rem 2rem;
+.gallery-feature img,
+.gallery-feature video {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
 }
 
-@media screen and (max-width: 960px) {
-.modal-background {
-    margin-top: -35vh;
-    width: 150vw;
-    height: 150vh;
-
+.gallery-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.modal-container {
-    width: 80vw;
-    height: 80vh;
+.gallery-thumb {
+  width: 72px;
+  height: 72px;
+  border: 2px solid transparent;
+  padding: 0;
+  background: var(--surface-muted);
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.modal-container > p {
-  font-size: 1rem;
-  padding: 0rem 1rem;
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.modal-container > h {
-  font-size: 2rem;
-  color: #dc6394;
+.gallery-thumb.is-current {
+  border-color: var(--brand);
 }
 
-.modal-container > h1 {
-  font-size: 1rem;
-  color: rgb(170, 20, 65);
-  padding :0.5rem 0rem;
-}
+.thumb-video {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-family: DotGothic16, monospace;
+  font-size: 0.7rem;
+  color: var(--ink);
 }

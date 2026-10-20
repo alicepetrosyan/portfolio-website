@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chaiko_mockup.glb — Live Render</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #1a1a1f; font-family: system-ui, sans-serif; }
+    #app { position: fixed; inset: 0; }
+    canvas { display: block; }
+    #hud {
+      position: fixed; top: 12px; left: 12px; z-index: 10;
+      background: rgba(20,20,26,0.82); backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+      padding: 12px 14px; color: #e7e7ea; font-size: 13px; line-height: 1.5;
+      max-width: 320px; box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    }
+    #hud h1 { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: #fff; }
+    #hud .row { display: flex; gap: 8px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+    #hud label { color: #a9a9b2; font-size: 12px; }
+    #hud input[type="color"] { width: 28px; height: 24px; border: none; border-radius: 5px; background: none; cursor: pointer; }
+    #hud button {
+      background: #3a3af0; color: #fff; border: none; border-radius: 7px;
+      padding: 7px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
+    #hud button:hover { background: #4a4aff; }
+    #hud button.secondary { background: rgba(255,255,255,0.1); }
+    #hud button.secondary:hover { background: rgba(255,255,255,0.18); }
+    #status { margin-top: 8px; font-size: 12px; color: #8bd98b; min-height: 16px; }
+    #status.err { color: #ff8b8b; }
+    #loading {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      color: #e7e7ea; font-size: 14px; z-index: 5;
+    }
+    input[type="range"] { width: 120px; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="loading">Loading model…</div>
+  <div id="hud">
+    <h1>chaiko_mockup.glb</h1>
+    <div style="font-size:12px;color:#a9a9b2;">Drag to orbit · scroll to zoom · right-drag to pan</div>
+    <div class="row">
+      <label>BG</label>
+      <input type="color" id="bg" value="#1a1a1f" />
+      <label>Env</label>
+      <select id="env" style="background:#26262e;color:#e7e7ea;border:1px solid rgba(255,255,255,0.1);border-radius:5px;padding:3px 6px;font-size:12px;">
+        <option value="studio">Studio</option>
+        <option value="warm">Warm</option>
+        <option value="cool">Cool</option>
+        <option value="flat">Flat</option>
+      </select>
+    </div>
+    <div class="row">
+      <label>Rotate</label>
+      <input type="checkbox" id="autorotate" checked />
+      <label>Zoom</label>
+      <input type="range" id="zoom" min="0.4" max="2.5" step="0.01" value="1" />
+    </div>
+    <div class="row">
+      <button id="shot">📸 Save to public/images</button>
+      <button id="reset" class="secondary">Reset view</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three.module.js",
+      "three/addons/": "/vendor/addons/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { buildPlaceholderJars } from '/jars.js';
+
+    const app = document.getElementById('app');
+    const statusEl = document.getElementById('status');
+    const loadingEl = document.getElementById('loading');
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.82;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    app.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a1f);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const envMaps = {
+      studio: pmrem.fromScene(new RoomEnvironment(), 0.04).texture,
+    };
+    scene.environment = envMaps.studio;
+    scene.environmentIntensity = 0.18;
+
+    // Warm studio, hard-contrast key / fill / rim lighting.
+    const keyLight = new THREE.DirectionalLight(0xffd9a8, 6.0);
+    keyLight.position.set(6, 9, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.bias = -0.0004;
+    scene.add(keyLight);
+    const fillLight = new THREE.DirectionalLight(0xd8c6b0, 0.12);
+    fillLight.position.set(-7, 1.5, 4);
+    scene.add(fillLight);
+    const rimLight = new THREE.DirectionalLight(0xffe4bc, 2.4);
+    rimLight.position.set(-2, 5, -8);
+    scene.add(rimLight);
+    scene.add(new THREE.AmbientLight(0xfff2e0, 0.03));
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.2;
+
+    let modelRoot = null;
+    let baseDistance = 5;
+    let fitCenter = new THREE.Vector3();
+
+    const loader = new GLTFLoader();
+    loader.load(
+      '/model/chaiko_mockup.glb',
+      (gltf) => {
+        modelRoot = gltf.scene;
+        scene.add(modelRoot);
+
+        // The GLB's jar meshes are empty; add placeholder jars in a 2x2 grid,
+        // sized/placed relative to the enclosure base (not the floating lid).
+        let enclosure = null;
+        modelRoot.traverse((o) => { if (o.name && o.name.includes('enclosure')) enclosure = o; });
+        const enclosureBox = new THREE.Box3().setFromObject(enclosure || modelRoot);
+        const jars = buildPlaceholderJars(enclosureBox);
+        scene.add(jars);
+
+        // Shadows for contrast, and fit the key light's shadow frustum to the scene.
+        scene.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+        const sceneBox = new THREE.Box3().setFromObject(modelRoot).union(new THREE.Box3().setFromObject(jars));
+        const sceneSize = sceneBox.getSize(new THREE.Vector3());
+        const sceneCenter = sceneBox.getCenter(new THREE.Vector3());
+        const maxDim = Math.max(sceneSize.x, sceneSize.y, sceneSize.z);
+        keyLight.target.position.copy(sceneCenter); scene.add(keyLight.target);
+        const r = maxDim * 1.2;
+        keyLight.shadow.camera.left = -r; keyLight.shadow.camera.right = r;
+        keyLight.shadow.camera.top = r; keyLight.shadow.camera.bottom = -r;
+        keyLight.shadow.camera.near = 0.01; keyLight.shadow.camera.far = maxDim * 12;
+        keyLight.shadow.camera.updateProjectionMatrix();
+
+        frameObject(modelRoot);
+        loadingEl.style.display = 'none';
+        setStatus('Model loaded + placeholder jars (2x2).');
+      },
+      (xhr) => {
+        if (xhr.total) loadingEl.textContent = `Loading model… ${Math.round((xhr.loaded / xhr.total) * 100)}%`;
+      },
+      (err) => {
+        loadingEl.textContent = 'Failed to load model.';
+        setStatus('Load error: ' + err.message, true);
+        console.error(err);
+      }
+    );
+
+    function frameObject(obj) {
+      const box = new THREE.Box3().setFromObject(obj);
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      fitCenter.copy(center);
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const fov = camera.fov * (Math.PI / 180);
+      baseDistance = (maxDim / 2) / Math.tan(fov / 2) * 1.6;
+
+      controls.target.copy(center);
+      resetView();
+    }
+
+    function resetView() {
+      const d = baseDistance * zoomSlider.valueAsNumber;
+      camera.position.set(fitCenter.x + d * 0.7, fitCenter.y + d * 0.45, fitCenter.z + d * 0.9);
+      camera.near = baseDistance / 100;
+      camera.far = baseDistance * 100;
+      camera.updateProjectionMatrix();
+      controls.update();
+    }
+
+    // HUD wiring
+    const bgInput = document.getElementById('bg');
+    bgInput.addEventListener('input', () => scene.background = new THREE.Color(bgInput.value));
+
+    const envSelect = document.getElementById('env');
+    envSelect.addEventListener('change', () => applyEnv(envSelect.value));
+    function applyEnv(kind) {
+      // Default (studio) is a warm, high-contrast key.
+      keyLight.color.set(0xffd9a8); fillLight.color.set(0xd8c6b0); rimLight.color.set(0xffe4bc);
+      renderer.toneMappingExposure = 0.82;
+      if (kind === 'warm') { keyLight.color.set(0xffcf90); fillLight.color.set(0xffd0a0); renderer.toneMappingExposure = 0.85; }
+      else if (kind === 'cool') { keyLight.color.set(0xcfe0ff); fillLight.color.set(0x9ab8ff); }
+      else if (kind === 'flat') { renderer.toneMappingExposure = 1.1; }
+    }
+
+    const autorotate = document.getElementById('autorotate');
+    autorotate.addEventListener('change', () => controls.autoRotate = autorotate.checked);
+
+    const zoomSlider = document.getElementById('zoom');
+    zoomSlider.addEventListener('input', resetView);
+
+    document.getElementById('reset').addEventListener('click', () => { zoomSlider.value = 1; resetView(); });
+
+    document.getElementById('shot').addEventListener('click', saveScreenshot);
+
+    async function saveScreenshot() {
+      setStatus('Capturing…');
+      // Render one clean frame before grabbing pixels
+      renderer.render(scene, camera);
+      const dataUrl = renderer.domElement.toDataURL('image/png');
+      try {
+        const res = await fetch('/screenshot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dataUrl })
+        });
+        const json = await res.json();
+        if (json.ok) setStatus('Saved → ' + json.path);
+        else setStatus('Save failed: ' + (json.error || 'unknown'), true);
+      } catch (e) {
+        setStatus('Save failed: ' + e.message, true);
+      }
+    }
+
+    function setStatus(msg, isErr) {
+      statusEl.textContent = msg;
+      statusEl.className = isErr ? 'err' : '';
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

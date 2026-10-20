@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>capturing…</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #1a1a1f; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three.module.js",
+      "three/addons/": "/vendor/addons/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { buildPlaceholderJars } from '/jars.js';
+
+    const W = window.innerWidth, H = window.innerHeight;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(1);
+    renderer.setSize(W, H);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.82;          // lower so the strong warm key doesn't blow out
+    renderer.shadowMap.enabled = true;            // real shadows for depth/contrast
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x1a1a1f);
+    const camera = new THREE.PerspectiveCamera(45, W / H, 0.01, 1000);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environmentIntensity = 0.18;            // very dim env = deep, dramatic shadows
+
+    // Warm studio key light, hard contrast: very strong key, minimal fill, warm rim.
+    const key = new THREE.DirectionalLight(0xffd9a8, 6.0);   // warm key
+    key.position.set(6, 9, 5);
+    key.castShadow = true;
+    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.bias = -0.0004;
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xd8c6b0, 0.12); fill.position.set(-7, 1.5, 4); scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffe4bc, 2.4); rim.position.set(-2, 5, -8); scene.add(rim);
+    scene.add(new THREE.AmbientLight(0xfff2e0, 0.03));       // faint warm ambient
+
+    window.__diag = 'start';
+    window.addEventListener('error', (e) => { window.__diag = 'window.error: ' + (e.message || e.error); });
+    window.addEventListener('unhandledrejection', (e) => { window.__diag = 'reject: ' + (e.reason && e.reason.message || e.reason); });
+
+    const loader = new GLTFLoader();
+    window.__diag = 'loader-created';
+    loader.load('/model/chaiko_mockup.glb', (gltf) => {
+      window.__diag = 'model-loaded';
+      scene.add(gltf.scene);
+
+      // The GLB's jar meshes are empty; add placeholder jars in a 2x2 grid,
+      // sized/placed relative to the enclosure base (not the floating lid).
+      let enclosure = null;
+      gltf.scene.traverse((o) => { if (o.name && o.name.includes('enclosure')) enclosure = o; });
+      const enclosureBox = new THREE.Box3().setFromObject(enclosure || gltf.scene);
+      const jars = buildPlaceholderJars(enclosureBox);
+      scene.add(jars);
+
+      const box = new THREE.Box3().setFromObject(gltf.scene).union(new THREE.Box3().setFromObject(jars));
+      const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+
+      // Let every mesh cast and receive shadows for the added contrast.
+      scene.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+
+      // Aim the key light at the model and fit its shadow frustum to the scene.
+      key.target.position.copy(center); scene.add(key.target);
+      const r = maxDim * 1.2;
+      key.shadow.camera.left = -r; key.shadow.camera.right = r;
+      key.shadow.camera.top = r; key.shadow.camera.bottom = -r;
+      key.shadow.camera.near = 0.01; key.shadow.camera.far = maxDim * 12;
+      key.shadow.camera.updateProjectionMatrix();
+      const fov = camera.fov * (Math.PI / 180);
+      const dist = (maxDim / 2) / Math.tan(fov / 2) * 1.6;
+      camera.position.set(center.x + dist * 0.7, center.y + dist * 0.45, center.z + dist * 0.9);
+      camera.near = dist / 100; camera.far = dist * 100;
+      camera.lookAt(center);
+      camera.updateProjectionMatrix();
+
+      // Render a few frames to settle, then signal ready.
+      let n = 0;
+      (function tick() {
+        renderer.render(scene, camera);
+        if (n++ < 5) return requestAnimationFrame(tick);
+        document.title = 'READY';
+        window.__renderReady = true;
+      })();
+    }, undefined, (err) => {
+      window.__diag = 'load-error: ' + (err && err.message);
+      document.title = 'ERROR: ' + (err && err.message);
+    });
+  </script>
+</body>
+</html>

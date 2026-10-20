@@ -1,0 +1,70 @@
+.scroll-arrow {
+  position: fixed;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 850;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--ink-nav);
+}
+
+.scroll-arrow-glyph {
+  width: 40px;
+  height: 40px;
+  /* Points right by default; rotate 90deg so it points down. */
+  transform: rotate(90deg);
+  /* Blurred drop shadow for contrast against the background. */
+  filter: drop-shadow(2px 3px 4px var(--folder-stack-shadow));
+  animation: arrow-bob 1.6s ease-in-out infinite;
+}
+
+/* Up state (last section): rotate so the arrow points up. */
+.scroll-arrow-up .scroll-arrow-glyph {
+  transform: rotate(-90deg);
+}
+
+/* Over the projects area the background is dark, so switch to a light color
+   (the same light tone used for the projects heading) for contrast. */
+.scroll-arrow-projects {
+  color: var(--project-header-color);
+}
+
+.scroll-arrow-projects:hover {
+  color: var(--text-on-dark);
+}
+
+/* Over the dark hero backdrop, use a white arrow for contrast. */
+.scroll-arrow-hero {
+  color: var(--text-on-dark);
+}
+
+.scroll-arrow-hero:hover {
+  color: #ffffff;
+}
+
+@keyframes arrow-bob {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 6px;
+  }
+}
+
+.scroll-arrow:hover {
+  color: var(--brand-mid);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-arrow-glyph {
+    animation: none;
+  }
+}

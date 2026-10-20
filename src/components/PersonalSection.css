@@ -1,0 +1,13 @@
+.personal-section {
+  background: var(--page-bg);
+  padding: 5rem 4vw 3rem;
+  /* Above about/projects in the scroll-over stack. */
+  position: relative;
+  z-index: 4;
+}
+
+.personal-title {
+  width: min(1400px, 100%);
+  margin: 0 auto 2.2rem;
+  text-align: left;
+}

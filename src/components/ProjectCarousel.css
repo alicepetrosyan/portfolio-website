@@ -1,0 +1,207 @@
+.projects-section {
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--project-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 4vw;
+  /* Sits above the hero but BEHIND the about section, so about stays in front
+     of projects as about pins and projects scrolls up beneath it. */
+  position: relative;
+  z-index: 1;
+}
+
+.projects-background-image {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  /* Extended well beyond the section (80% taller, offset up 40%) so the strong,
+     near-stationary parallax counter-shift has ample room to move without ever
+     exposing an edge (the clamp allows up to ±28% of section height of travel;
+     this 40%/180% framing keeps the image covering [0,H] across that range).
+     Translating a viewport-sized layer (vs scaling it up) keeps the compositor
+     cost low. */
+  top: -40%;
+  height: 180%;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-background-image {
+    top: 0;
+    height: 100%;
+    transform: none;
+  }
+}
+
+.projects-title {
+  color: var(--project-header-color);
+  margin-bottom: 2rem;
+  align-self: flex-start;
+  width: min(1400px, 100%);
+  text-align: left;
+  /* Drop shadow to lift the heading off the background for contrast. */
+  text-shadow: 3px 4px 0 var(--folder-stack-shadow);
+}
+
+.carousel {
+  width: min(1100px, 100%);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.carousel-stage {
+  position: relative;
+  width: 100%;
+  /* clamp with dvh (actual viewport height) + a floor so the folders are not
+     clipped when the window is short, while keeping the large-screen ceiling. */
+  height: clamp(340px, 68dvh, 580px);
+  overflow: hidden;
+  touch-action: pan-y;
+  outline: none;
+  /* Transparent so the folders sit over the section's parallax backdrop rather
+     than a flat solid box. The hero bleed-through is prevented by the opaque
+     .projects-section background (full-bleed) + the lazy .section-fallback, not
+     by a backing on the stage. */
+  background-color: transparent;
+}
+
+.carousel-stage:focus-visible {
+  outline: 2px solid var(--text-on-dark);
+  outline-offset: 4px;
+}
+
+/* --- Chrome (desktop) carousel --- */
+
+/* The shared WebGL canvas fills the stage behind the DOM overlays. */
+.carousel-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Overlay layer sits above the canvas; individual overlays are positioned to
+   match the three 3D folder slots. */
+.carousel-overlays {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* The title and cover image are rendered in 3D on the folder face. This is just
+   an invisible, folder-sized button positioned over the active folder's
+   projected rect so clicking anywhere on the folder opens the modal. */
+.project-click-target {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.project-click-target:focus-visible {
+  outline: 3px solid var(--text-on-dark);
+  outline-offset: 2px;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transform: translateX(var(--slide-x, 0)) translateY(var(--slide-y, 0)) scale(var(--slide-scale, 1));
+  transition: transform 0.45s ease, opacity 0.45s ease, visibility 0.45s ease;
+}
+
+.carousel-slide[data-offset="-2"] { --slide-x: -24%; --slide-y: 24px; --slide-scale: 0.84; }
+.carousel-slide[data-offset="-1"] { --slide-x: -12%; --slide-y: 12px; --slide-scale: 0.92; }
+.carousel-slide[data-offset="1"] { --slide-x: 12%; --slide-y: 12px; --slide-scale: 0.92; }
+.carousel-slide[data-offset="2"] { --slide-x: 24%; --slide-y: 24px; --slide-scale: 0.84; }
+
+.carousel-btn {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-on-dark);
+  line-height: 1;
+  cursor: pointer;
+  /* Blurred drop shadow behind the pixel arrow (on the button so it stays put
+     regardless of the icon's rotation). */
+  filter: drop-shadow(2px 3px 4px var(--folder-stack-shadow));
+}
+
+.carousel-btn:hover {
+  color: var(--brand-light);
+}
+
+.carousel-arrow-icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* The icon points right by default; rotate 180deg for the previous button. */
+.carousel-btn-prev .carousel-arrow-icon {
+  transform: rotate(180deg);
+}
+
+@media screen and (max-width: 700px) {
+  .carousel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .carousel-stage {
+    /* Tall enough for the folder tab + its square body at the mobile card
+       width below, so nothing is clipped by the stage. */
+    height: min(104vw, 600px);
+    min-height: 360px;
+  }
+
+  /* Narrower card on mobile so tab + square body fit the stage height. */
+  .folder-card {
+    width: min(420px, 66vw);
+  }
+
+  .carousel-slide[data-offset="-2"] { --slide-x: -13%; }
+  .carousel-slide[data-offset="-1"] { --slide-x: -6%; }
+  .carousel-slide[data-offset="1"] { --slide-x: 6%; }
+  .carousel-slide[data-offset="2"] { --slide-x: 13%; }
+
+  .carousel-btn {
+    display: none;
+  }
+
+  .carousel-slide:not(.is-active) .folder-card {
+    pointer-events: none;
+  }
+}
+
+@media screen and (min-width: 701px) and (max-width: 1100px) {
+  .carousel-slide[data-offset="-2"] { --slide-x: -20%; }
+  .carousel-slide[data-offset="-1"] { --slide-x: -10%; }
+  .carousel-slide[data-offset="1"] { --slide-x: 10%; }
+  .carousel-slide[data-offset="2"] { --slide-x: 20%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-slide {
+    transition: none;
+  }
+}
