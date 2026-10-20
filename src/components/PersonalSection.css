@@ -1,6 +1,6 @@
 .personal-section {
   background: var(--page-bg);
-  padding: 5rem 4vw 3rem;
+  padding: 5rem max(1.25rem, 4vw) 3rem;
   /* Above about/projects in the scroll-over stack. */
   position: relative;
   z-index: 4;

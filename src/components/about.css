@@ -3,7 +3,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 6vw 5rem;
+  /* Horizontal padding uses max() so it never collapses below a comfortable
+     gutter on narrow/mobile viewports (plain vw shrinks to almost nothing and
+     crowds the edges). Scales up to 6vw on wide screens. */
+  padding: 6rem max(1.25rem, 6vw) 5rem;
   /* Scrolls up over the pinned hero (reveal parallax). Not sticky itself, so it
      scrolls on past and reveals the projects section beneath it. Its opaque
      background + z-index above the hero cover the hero cleanly as it rises. */

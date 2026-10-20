@@ -182,7 +182,7 @@
     "gallery": [
       { "type": "image", "src": "/images/servo-depositor.jpg", "webp": "/images/servo-depositor.webp" },
       { "type": "image", "src": "/images/servo-deposit-results.jpg", "webp": "/images/servo-deposit-results.webp" },
-      { "type": "image", "src": "/images/servo-depositor-before-after.jpg", "webp": "/images/servo-depositor-before-after.webp" },
+      { "type": "image", "src": "/images/servo-depositor-before-after.png", "webp": "/images/servo-depositor-before-after.webp" },
       { "type": "image", "src": "/images/servo-hmi-1.jpg", "webp": "/images/servo-hmi-1.webp" },
       { "type": "image", "src": "/images/servo-hmi-2.jpg", "webp": "/images/servo-hmi-2.webp" },
       { "type": "image", "src": "/images/servo-hmi-3.jpg", "webp": "/images/servo-hmi-3.webp" },
@@ -223,8 +223,8 @@
   {
     "id": "camera-calibration",
     "title": "apex motion camera calibration",
-    "coverImage": "/images/icon-placeholder.jpg",
-    "coverWebp": "/images/icon-placeholder.webp",
+    "coverImage": "/images/apex-cookie-decorating.jpg",
+    "coverWebp": "/images/apex-cookie-decorating.webp",
     "tools": "python",
     "sections": [
       {
@@ -275,7 +275,7 @@
     ],
     "gallery": [
       { "type": "image", "src": "/images/apex-cookie-decorating.jpg", "webp": "/images/apex-cookie-decorating.webp" },
-      { "type": "video", "src": "/images/apex-cookie-decorating.mp4" }
+      { "type": "video", "src": "/videos/apex-cookie-decorating.mp4" }
     ]
   }
 ]
